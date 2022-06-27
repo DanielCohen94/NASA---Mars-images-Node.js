@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<!--<html lang="en">-->
+<html>
+<head>
+    <meta charset="UTF-8">
+    <!--    <meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <link rel='stylesheet' href='/stylesheets/style.css'/>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <script type='module' src="javascripts/nasa.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous">
+    </script>
+    <title>Exercise 4 - Internet Programming Course</title>
+</head>
+
+<body>
+<div class="container">
+    <!-- A formatted page header includes a modal opener button that displays the submitter's details:
+    name and email address. -->
+    <div style="background-image: url('https://e.rpp-noticias.io/xlarge/2019/12/11/portada_512751.jpg');background-size:cover"
+         class="p-4">
+        <div style="text-align:center;background-color: rgba(255, 255, 255, 0.6)" class="mx-auto w-50 p-4">
+            <h5>Mars images browser</h5>
+            Browse NASA Mars images and save your preferred ones.
+            <div>
+                <button data-bs-toggle="modal" class="rounded mx-auto d-block btn-primary"
+                        data-bs-target="#ModalWho"> Whom am i
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="del-err">
+        <!-- spinner loading -->
+        <div class="text-center" id="spinner" style="display:none;position: absolute;left: 0;right: 0; ">
+            <img src='https://icon-library.com/images/spinner-icon-gif/spinner-icon-gif-27.jpg' class="p-4"
+                 alt="">
+        </div>
+
+        <!-- Modal Who am i-->
+        <div class="modal" id="ModalWho" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header p-3 mb-2 bg-primary text-white">
+                        <h5 class="modal-title">Who am i</h5>
+                        <button type="button" class="close-modal btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <h5 class="modal-title">Liron Hatabi</h5>
+                        <p>- Email: lironhat@edu.hac.ac.il</p>
+                        <h5 class="modal-title">Daniel Cohen</h5>
+                        <p>- Email: danielcoh@edu.hac.ac.il</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="close-modal btn btn-secondary" data-bs-dismiss="modal">ok
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Error-Save the same image twice -->
+        <div class="modal" id="Modal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header p-3 mb-2 bg-primary text-white">
+                        <h5 class="modal-title">Information</h5>
+                        <button type="button" class="close-modal btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        The image is already saved.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="close-modal btn btn-secondary" data-bs-dismiss="modal">ok
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-12 col-md-12 col-lg-6">
+                <h3>Hello <%- user.firstName %>    <%- user.lastName %>
+                    <button type="button" id="logout" class="btn btn-danger">log out</button>
+                </h3>
+            </div>
+        </div>
+        <div class="row">
+            <!-- Form section-->
+            <div class="col-12 col-md-12 col-lg-6">
+                <div class="text-center text-white bg-secondary mb-3">
+                    <h1 class="card-title">Search for image</h1>
+                </div>
+                <form class="row g-3 needs-validation" id="needs-validation" novalidate>
+                    <div>
+                        <label for="date"> Date (YYYY-MM-DD) or Sol:</label>
+                        <input id="date" type="text" class="form-control" placeholder="date" required>
+                        <div class="text-danger errormessage"></div>
+                    </div>
+                    <div>
+                        <p>Select Rover:</p>
+                        <select class="form-select Rover" aria-label="Default select example" id="rover">
+                            <option selected value="">Choose a rover</option>
+                            <option value="Curiosity">Curiosity</option>
+                            <option value="Opportunity">Opportunity</option>
+                            <option value="Spirit">Spirit</option>
+                        </select>
+                        <div class="text-danger errormessage"></div>
+                    </div>
+                    <div>
+                        <p>Select Camera:</p>
+                        <select class="form-select Camera" aria-label="Default select example" id="camera">
+                            <option selected value="">Choose a camera</option>
+                            <option value="FHAZ">FHAZ</option>
+                            <option value="RHAZ">RHAZ</option>
+                            <option value="MAST">MAST</option>
+                            <option value="CHEMCAM">CHEMCAM</option>
+                            <option value="MAHLI">MAHLI</option>
+                            <option value="MARDI">MARDI</option>
+                            <option value="NAVCAM">NAVCAM</option>
+                            <option value="PANCAM">PANCAM</option>
+                            <option value="MINITES">MINITES</option>
+                        </select>
+                        <div class="text-danger errormessage"></div>
+                    </div>
+                    <div>
+                        <button id="search" type="submit" class="btn btn-outline-success">search</button>
+                        <button id="clear" type="button" class="btn btn-outline-success">clear</button>
+                    </div>
+                </form>
+            </div>
+            <!-- Saved images section-->
+            <div class="col-12 col-md-12 col-lg-6">
+                <div class="text-center text-white bg-secondary mb-3">
+                    <h1 class="card-title">Saved images</h1>
+                </div>
+                <div class="row" id="SavedList">
+                </div>
+                <div>
+                    <button id="start-slide" type="button" class="btn btn-outline-success">Start slide
+                        show
+                    </button>
+                    <button id="stop-slide" type="button" class="btn btn-outline-success">Stop slide show
+                    </button>
+                    <button id="ClearList" type="button" class="btn btn-danger">Clear list</button>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <!-- Carousel section-->
+            <div class="col-12 col-md-12 col-lg-6 mx-auto" id="Carrousel" style="display: none">
+                <div id="carouselExampleControlsNoTouching" class="carousel slide"
+                     data-bs-ride="carousel">
+                    <div class="carousel-inner" id="CarouselInner">
+                    </div>
+                    <button class="carousel-control-prev" type="button"
+                            data-bs-target="#carouselExampleControlsNoTouching" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button"
+                            data-bs-target="#carouselExampleControlsNoTouching" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            </div>
+            <!-- Result of search-->
+            <div class="text-center card text-white bg-secondary mb-3">
+                <h1 class="card-title">Search result</h1>
+            </div>
+            <div class="row" id="SearchResultList">
+            </div>
+
+        </div>
+    </div>
+
+</div>
+</body>
+
+</html>
